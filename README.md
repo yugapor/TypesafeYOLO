@@ -7,7 +7,7 @@ A [Pi Coding Agent](https://pi.dev/) extension that lets you write automatic app
 
 ## Installation
 
-Once published to npm, install the extension through Pi (the package is not yet published).
+Install the extension through Pi.
 
 ```sh
 pi install npm:pi-typesafe-yolo
