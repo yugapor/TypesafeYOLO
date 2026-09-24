@@ -1,0 +1,24 @@
+{
+  "name": "pi-typesafe-yolo",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "A natural-language approval filter for Pi, powered by TypeSafe AI.",
+  "keywords": ["pi-package"],
+  "files": ["index.ts", "FILTER.md", "README.ja.md"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yugapor/TypesafeYOLO.git"
+  },
+  "peerDependencies": { "@earendil-works/pi-coding-agent": "*" },
+  "pi": { "extensions": ["./index.ts"] },
+  "scripts": {
+    "check": "tsc --noEmit",
+    "test": "node --test index.test.mjs"
+  },
+  "devDependencies": {
+    "@earendil-works/pi-coding-agent": "0.85.1",
+    "@types/node": "^22.19.0",
+    "typescript": "^5.9.3"
+  },
+  "engines": { "node": ">=22.19.0" }
+}
