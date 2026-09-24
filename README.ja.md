@@ -7,7 +7,7 @@
 
 ## インストール
 
-npm公開後は、Piからインストールできます（現在は未公開）。
+Piからインストールできます。
 
 ```sh
 pi install npm:pi-typesafe-yolo
