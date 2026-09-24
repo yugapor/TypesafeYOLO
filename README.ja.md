@@ -15,10 +15,6 @@ pi install npm:pi-typesafe-yolo
 
 TypeSafe AIのAPIキーを `~/.pi/agent/typesafe-yolo.key` に保存して、Piを起動してください。
 
-```sh
-(umask 077; pbpaste > ~/.pi/agent/typesafe-yolo.key)
-```
-
 エージェントが実行するコマンドに引き継がれないよう、キーは環境変数ではなくファイルから読みます。
 キーがない場合は、すべての操作で確認します。
 インストール時にPiを開いていた場合は `/reload` で拡張を読み込みます。

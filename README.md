@@ -15,10 +15,6 @@ pi install npm:pi-typesafe-yolo
 
 Save your TypeSafe AI API key to `~/.pi/agent/typesafe-yolo.key`, then start Pi.
 
-```sh
-(umask 077; pbpaste > ~/.pi/agent/typesafe-yolo.key)
-```
-
 The key is read from a file, not an environment variable, so commands run by the agent do not inherit it.
 Without a key, every operation requires confirmation.
 If Pi was running when you installed the extension, use `/reload` to load it.
