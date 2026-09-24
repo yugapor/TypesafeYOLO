@@ -13,7 +13,14 @@ Once published to npm, install the extension through Pi (the package is not yet 
 pi install npm:pi-typesafe-yolo
 ```
 
-Set the `TYPESAFE_API_KEY` environment variable to your TypeSafe AI API key, then start Pi.
+Save your TypeSafe AI API key to `~/.pi/agent/typesafe-yolo.key`, then start Pi.
+
+```sh
+(umask 077; pbpaste > ~/.pi/agent/typesafe-yolo.key)
+```
+
+The key is read from a file, not an environment variable, so commands run by the agent do not inherit it.
+Without a key, every operation requires confirmation.
 If Pi was running when you installed the extension, use `/reload` to load it.
 
 ## Filter
@@ -37,8 +44,8 @@ When an operation requires confirmation, choose one of the following:
 
 Dismissing the selection, leaving feedback blank, or cancelling feedback does not approve the operation.
 Classification failures also require confirmation. In non-interactive mode, operations that require confirmation are blocked.
-Use `/reload` to apply changes to your filter.
-If you set `PI_CODING_AGENT_DIR`, place `typesafe-yolo.md` in that directory instead.
+Use `/reload` to apply changes to your filter or key.
+If you set `PI_CODING_AGENT_DIR`, place `typesafe-yolo.md` and `typesafe-yolo.key` in that directory instead.
 
-The filter and tool arguments are sent to TypeSafe AI, including any code or secrets in those arguments.
+The filter, tool arguments, working directory, and OS are sent to TypeSafe AI, including any code or secrets in those arguments.
 AI classification can make mistakes.

@@ -13,7 +13,14 @@ Piからインストールできます。
 pi install npm:pi-typesafe-yolo
 ```
 
-環境変数 `TYPESAFE_API_KEY` にTypeSafe AIのAPIキーを設定して、Piを起動してください。
+TypeSafe AIのAPIキーを `~/.pi/agent/typesafe-yolo.key` に保存して、Piを起動してください。
+
+```sh
+(umask 077; pbpaste > ~/.pi/agent/typesafe-yolo.key)
+```
+
+エージェントが実行するコマンドに引き継がれないよう、キーは環境変数ではなくファイルから読みます。
+キーがない場合は、すべての操作で確認します。
 インストール時にPiを開いていた場合は `/reload` で拡張を読み込みます。
 
 ## Filter
@@ -37,8 +44,8 @@ pi install npm:pi-typesafe-yolo
 
 選択のキャンセル、修正指示の空欄・キャンセルでは、操作を許可しません。
 分類に失敗した場合も確認し、確認できない非対話モードでは実行を止めます。
-Filterの変更は `/reload` で反映できます。
-`PI_CODING_AGENT_DIR` を設定している場合は、そのディレクトリに `typesafe-yolo.md` を置いてください。
+Filterやキーの変更は `/reload` で反映できます。
+`PI_CODING_AGENT_DIR` を設定している場合は、そのディレクトリに `typesafe-yolo.md` と `typesafe-yolo.key` を置いてください。
 
-Filterとツール引数はTypeSafe AIへ送信されます。引数内のコードや秘密情報も含まれます。
+Filter、ツール引数、作業ディレクトリ、OSはTypeSafe AIへ送信されます。引数内のコードや秘密情報も含まれます。
 AIによる分類のため、誤判定することがあります。

@@ -22,8 +22,16 @@ export function decisionOf(answer: unknown): "allow" | "ask" | "deny" {
 
 export default function (pi: ExtensionAPI) {
   const filterPath = join(getAgentDir(), "typesafe-yolo.md");
-  // Load once: a tool editing the file cannot change this run's policy.
+  // A file, not an env var: tool subprocesses inherit Pi's environment.
+  const keyPath = join(getAgentDir(), "typesafe-yolo.key");
+  // Load once: a tool editing either file cannot change this run's behavior.
   let filter = "";
+  let apiKey = "";
+  try {
+    apiKey = readFileSync(keyPath, "utf8").trim();
+  } catch {
+    // Without a key, every operation falls back to manual review.
+  }
   try {
     try {
       filter = readFileSync(filterPath, "utf8").trim();
@@ -43,7 +51,6 @@ export default function (pi: ExtensionAPI) {
     let decision: "allow" | "ask" | "deny" = "ask";
     let reason = "The filter requires confirmation, or the classification is uncertain.";
     try {
-      const apiKey = process.env.TYPESAFE_API_KEY;
       if (!apiKey) throw new Error("missing API key");
       const response = await fetch("https://api.typesafe.ai/v1/systemone", {
         method: "POST",
@@ -51,7 +58,14 @@ export default function (pi: ExtensionAPI) {
         signal: AbortSignal.any([...(ctx.signal ? [ctx.signal] : []), AbortSignal.timeout(5000)]),
         body: JSON.stringify({
           model: "jev-latest",
-          state: { tool: event.toolName, input: event.input, cwd: ctx.cwd, os: process.platform },
+          state: {
+            tool: event.toolName,
+            input: event.input,
+            cwd: ctx.cwd,
+            os: process.platform,
+            filter_file: filterPath,
+            api_key_file: keyPath,
+          },
           questions: {
             decision: {
               type: "choice",
@@ -72,7 +86,9 @@ export default function (pi: ExtensionAPI) {
       const data = await response.json();
       decision = decisionOf(data?.answers?.decision);
     } catch {
-      reason = "TypeSafe classification is unavailable. Review this operation manually.";
+      reason = apiKey
+        ? "TypeSafe classification is unavailable. Review this operation manually."
+        : `TypeSafe API key not found in ${keyPath}. Review this operation manually.`;
     }
 
     if (ctx.signal?.aborted) return block("TypeSafe YOLO: cancelled.");
